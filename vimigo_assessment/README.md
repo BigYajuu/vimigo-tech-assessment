@@ -1,16 +1,14 @@
+Created by Chuyue Wu (cwuu0034@student.monash.edu)
+
 # vimigo_assessment
 
-A new Flutter project.
+This project is meant for entry assessment of Vimigo.
 
-## Getting Started
+## Features Implemented
+1. Display a contacts list that is sorted based on the time.
 
-This project is a starting point for a Flutter application.
+## Dependencies
+- sqflite - Storing local data
+- intl - DateTime
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+(See pubspec.yaml)
