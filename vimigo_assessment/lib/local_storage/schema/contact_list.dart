@@ -1,3 +1,4 @@
+// Table name for Contact DB
 const String tableContactList = 'contact_list';
 
 class ContactFields {
@@ -9,6 +10,8 @@ class ContactFields {
   static const String checkIn = 'checkIn';
 }
 
+// Contact instances are universal for representing individual contact,
+// It also features converting to/from JSON whenever DB is involved.
 class Contact {
   final int? id;
   final String user;

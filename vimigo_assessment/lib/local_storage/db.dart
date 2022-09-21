@@ -9,17 +9,18 @@ class ContactListDB {
 
   ContactListDB._init();
 
+  static const contactListFilePath = 'contact_list.db';
+
   Future<Database> get database async {
     if (_database != null) return _database!;
-
-    _database = await _initDB('contact_list.db');
+    _database = await _initDB();
     return _database!;
   }
 
   // Initializing the DB
-  Future<Database> _initDB(String filePath) async {
+  Future<Database> _initDB() async {
     final dbPath = await getDatabasesPath();
-    final path = p.join(dbPath, filePath);
+    final path = p.join(dbPath, contactListFilePath);
 
     return await openDatabase(path, version: 1, onCreate: _createDB);
   }
@@ -33,7 +34,15 @@ class ContactListDB {
         ${ContactFields.user},
         ${ContactFields.phone},
         ${ContactFields.checkIn}
-      ) ORDER BY ${ContactFields.checkIn} ASC''');
+      )''');
+  }
+
+  // Delete the DB
+  void _deleteDB() async {
+    final dbPath = await getDatabasesPath();
+    final path = p.join(dbPath, contactListFilePath);
+    databaseFactory.deleteDatabase(path);
+    _database = null;
   }
 
   // CRUD
@@ -44,11 +53,12 @@ class ContactListDB {
     return newContact.copy(id: id);
   }
 
-  Future<List<Contact>> readWholeList() async {
+  Future<List<Contact>> getWholeList() async {
     final db = await instance.database;
 
     // get all rows
-    final queriedJsonList = await db.query(tableContactList);
+    final queriedJsonList = await db.query(tableContactList,
+        orderBy: '${ContactFields.checkIn} ASC');
 
     List<Contact> queriedInstances = [];
     if (queriedJsonList.isNotEmpty) {
