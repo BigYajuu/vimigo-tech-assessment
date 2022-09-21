@@ -72,6 +72,12 @@ class ContactListDB {
     return queriedInstances;
   }
 
+  Future clearWholeList() async {
+    final db = await instance.database;
+    // truncate all entries
+    db.delete(tableContactList);
+  }
+
   // Closing the DB
   Future close() async {
     final db = await instance.database;

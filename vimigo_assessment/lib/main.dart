@@ -49,6 +49,16 @@ class HomeState extends State<Home> {
   final _timeDispAgo = ValueNotifier(true);
   bool isLoading = false;
 
+  @override
+  void initState() {
+    super.initState();
+
+    refreshContacts();
+
+    // Configure time disp mode boolean
+    getTimeDispAgo();
+  }
+
   // Configure time disp mode boolean through sharedPref lookup
   Future getTimeDispAgo() async {
     final SharedPreferences prefs = await _prefs;
@@ -77,17 +87,7 @@ class HomeState extends State<Home> {
     _timeDispAgo.value = !_timeDispAgo.value;
   }
 
-  @override
-  void initState() {
-    super.initState();
-
-    refreshContacts();
-
-    // Configure time disp mode boolean
-    getTimeDispAgo();
-  }
-
-  // Fns to get random data from
+  // Followings are fns to get random data from
   String getAName() {
     int next = _rand.nextInt(_nameList.length);
     return _nameList[next];
@@ -116,12 +116,17 @@ class HomeState extends State<Home> {
     const int reps = 5;
 
     // data generation
-
     for (var i = 0; i < reps; i++) {
       Contact newContact =
           Contact(user: getAName(), phone: getAPhone(), checkIn: getACheckIn());
       await ContactListDB.instance.create(newContact);
     }
+    refreshContacts();
+  }
+
+  // Clear ContactList table data
+  Future clearContactList() async {
+    await ContactListDB.instance.clearWholeList();
     refreshContacts();
   }
 
@@ -176,7 +181,7 @@ class HomeState extends State<Home> {
                   // Float 2) Clear all data in the DB
                   FloatingActionButton.extended(
                     onPressed: () {
-                      // Add your onPressed code here!
+                      clearContactList();
                     },
                     label: const Text('Clear Data'),
                     icon: const Icon(Icons.delete),
