@@ -15,13 +15,20 @@ Set up your flutter environment, Android emulator as usual.
 5. [X] Users are able to change between the original time format and format “time ago” with a toggle button and keep the changes even if users kill the app.
 6. [X] An action button that can allow the user to share the contact information to other installedapplications on the mobile.
 
+## Assumptions
+- Each contact's usernames and phone numbers are randomly picked from a fixed array of data. The fixed data set is not stored in the SQFlite.
+- Each contact's check-in dateTime is chosen randomly between now and 120000 seconds ago.
+- The sharing feature is for sharing text description per contact.
+- The 'xx ago' time format feature uses an external package.
+
 ## Dependencies Used
 - sqflite - Storing local data
-- intl - DateTime
+- intl - Ease of DateTime management
 - shared_preferences - Storing irrelational data in local (for changing time mode display)
 - timeago - For displaying DateTime in 'xx ago' format
 - fluttertoast - For showing toast info when scroll reaches to the bottom
 - flutter_share - to share contact
+(See pubspec.yaml for more information)
 
 ## Additional Features
 - Uses SQFlite to store all contact entries as local storage, enabling sorting and CRUD operations done to the contactList easily.
@@ -37,5 +44,3 @@ Set up your flutter environment, Android emulator as usual.
 - Android Version - 11
 - Date and Time - GMT+00:00
 - Light mode
-
-(See pubspec.yaml)
