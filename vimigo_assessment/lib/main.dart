@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'local_storage/db.dart';
 import 'components/contact_containter.dart';
 import 'local_storage/schema/contact_list.dart';
@@ -44,13 +45,46 @@ class HomeState extends State<Home> {
   late List<Contact> _contacts = [
     Contact(user: getAName(), phone: getAPhone(), checkIn: getACheckIn())
   ]; // Sets as state of all contacts (from db)
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  final _timeDispAgo = ValueNotifier(true);
   bool isLoading = false;
+
+  // Configure time disp mode boolean through sharedPref lookup
+  Future getTimeDispAgo() async {
+    final SharedPreferences prefs = await _prefs;
+    bool? sPO = prefs.getBool("timeDispAgo"); // outcome of sharedPref
+
+    // If sharedPref is null, set it for the first time.
+    if (sPO == null) {
+      prefs.setBool("timeDispAgo", true);
+    } else {
+      _timeDispAgo.value = sPO;
+    }
+  }
+
+  // Flips the state of the time disp mode & also set it in sharedPref
+  Future flipTimeDispAgo() async {
+    final SharedPreferences prefs = await _prefs;
+    bool? sPO = prefs.getBool("timeDispAgo"); // outcome of sharedPref
+
+    // If sharedPref is null, set it for the first time.
+    // Otherwise, flip the boolean
+    if (sPO == null) {
+      prefs.setBool("timeDispAgo", !_timeDispAgo.value);
+    } else {
+      prefs.setBool("timeDispAgo", !sPO);
+    }
+    _timeDispAgo.value = !_timeDispAgo.value;
+  }
 
   @override
   void initState() {
     super.initState();
 
     refreshContacts();
+
+    // Configure time disp mode boolean
+    getTimeDispAgo();
   }
 
   // Fns to get random data from
@@ -99,33 +133,39 @@ class HomeState extends State<Home> {
               backgroundColor: Colors.green,
               title: const Text('Contact List Management'),
             ),
-            body: Column(
-              children: [
-                Expanded(
-                    child: isLoading
-                        ? const Center(child: CircularProgressIndicator())
-                        : RefreshIndicator(
-                            onRefresh: generateContacts,
-                            child: ListView.builder(
-                                padding: const EdgeInsets.all(8),
-                                itemCount: _contacts.length,
-                                itemBuilder: (context, index) {
-                                  return ContactContainer(
-                                      contact: _contacts[index]);
-                                }),
-                          )),
-              ],
-            ),
+            body: ValueListenableBuilder<bool>(
+                valueListenable: _timeDispAgo,
+                builder: (context, value, child) {
+                  return Column(
+                    children: [
+                      Expanded(
+                          child: isLoading
+                              ? const Center(child: CircularProgressIndicator())
+                              : RefreshIndicator(
+                                  onRefresh: generateContacts,
+                                  child: ListView.builder(
+                                      padding: const EdgeInsets.all(8),
+                                      itemCount: _contacts.length,
+                                      itemBuilder: (context, index) {
+                                        return ContactContainer(
+                                          contact: _contacts[index],
+                                          isTimeDispAgo: _timeDispAgo,
+                                        );
+                                      }),
+                                )),
+                    ],
+                  );
+                }),
             floatingActionButton: Padding(
               padding: const EdgeInsets.all(12.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Expanded(child: Container()),
-                  // Float 1) Clear all data in the DB
+                  // Float 1) Set SharedPref of time disp mode
                   FloatingActionButton(
                     onPressed: () {
-                      // Add your onPressed code here!
+                      flipTimeDispAgo();
                     },
                     backgroundColor: Colors.blueGrey[300],
                     child: const Icon(Icons.access_time),
@@ -133,7 +173,7 @@ class HomeState extends State<Home> {
                   const SizedBox(
                     height: 20,
                   ),
-                  // Float 2) Set SharedPref of time disp mode
+                  // Float 2) Clear all data in the DB
                   FloatingActionButton.extended(
                     onPressed: () {
                       // Add your onPressed code here!

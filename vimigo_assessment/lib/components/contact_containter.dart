@@ -1,22 +1,35 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:vimigo_assessment/local_storage/schema/contact_list.dart';
 
 // A single contact item that is to be placed inside of the ListView
-class ContactContainer extends StatelessWidget {
+class ContactContainer extends StatefulWidget {
   final Contact contact;
+  final ValueListenable<bool> isTimeDispAgo;
 
-  const ContactContainer({super.key, required this.contact});
+  const ContactContainer(
+      {super.key, required this.contact, required this.isTimeDispAgo});
 
+  @override
+  _ContactContainerState createState() => _ContactContainerState();
+}
+
+class _ContactContainerState extends State<ContactContainer> {
   // Returns the string display for time.
   // There are 2 modes of display:
   // F) Normal date time format
   // T) In mode of '-- ago'
   // Refers to shared pref for user setting on the format
+  // Value is found from a common Listenable variable set on the home page
   String getCheckInDisplay() {
-    final f = DateFormat('yyyy-MM-dd hh:mm:ss');
-    return f.format(contact.checkIn);
+    // print(widget.isTimeDispAgo.value);
+    if (widget.isTimeDispAgo.value) {
+      return '- time ago';
+    } else {
+      return DateFormat('yyyy-MM-dd hh:mm:ss').format(widget.contact.checkIn);
+    }
   }
 
   @override
@@ -49,7 +62,7 @@ class ContactContainer extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: RichText(
                 text: TextSpan(
-                  text: contact.user,
+                  text: widget.contact.user,
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
               )),
@@ -73,7 +86,7 @@ class ContactContainer extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: RichText(
                 text: TextSpan(
-                  text: contact.phone,
+                  text: widget.contact.phone,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
               ),
