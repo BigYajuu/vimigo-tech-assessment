@@ -9,6 +9,11 @@ class ContactContainer extends StatelessWidget {
 
   const ContactContainer({super.key, required this.contact});
 
+  // Returns the string display for time.
+  // There are 2 modes of display:
+  // F) Normal date time format
+  // T) In mode of '-- ago'
+  // Refers to shared pref for user setting on the format
   String getCheckInDisplay() {
     final f = DateFormat('yyyy-MM-dd hh:mm:ss');
     return f.format(contact.checkIn);
@@ -28,7 +33,7 @@ class ContactContainer extends StatelessWidget {
             bottomRight: Radius.circular(10)),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.3),
+            color: Colors.grey.withOpacity(0.2),
             spreadRadius: 1,
             blurRadius: 3,
             offset: const Offset(0, 5), // changes position of shadow
@@ -36,43 +41,46 @@ class ContactContainer extends StatelessWidget {
         ],
       ),
       // The content within the box
-      child: Column(
-        children: [
-          // Row 1) Display name and time stat
-          Row(children: [
-            // Cell 1) Display name
-            Align(
-                alignment: Alignment.centerLeft,
-                child: RichText(
-                  text: TextSpan(
-                    text: contact.user,
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                )),
-            // Cell 2) Display time stat to the right
-            // Time display mode depends on the setting.
-            Expanded(
-                child: Align(
-                    alignment: Alignment.centerRight,
-                    child: RichText(
-                      text: TextSpan(
-                        text: getCheckInDisplay(),
-                        style: Theme.of(context).textTheme.subtitle2,
-                      ),
-                    )))
-          ]),
-          // Row 2) Display phone number
+      child: Column(children: [
+        // Row 1) Display name and time stat
+        Row(children: [
+          // Cell 1) Display name
           Align(
-            alignment: Alignment.centerLeft,
-            child: RichText(
-              text: TextSpan(
-                text: contact.phone,
-                style: Theme.of(context).textTheme.titleMedium,
+              alignment: Alignment.centerLeft,
+              child: RichText(
+                text: TextSpan(
+                  text: contact.user,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              )),
+          // Cell 2) Display time stat to the right
+          // Time display mode depends on the setting.
+          Expanded(
+              child: Align(
+                  alignment: Alignment.centerRight,
+                  child: RichText(
+                    text: TextSpan(
+                      text: getCheckInDisplay(),
+                      style: Theme.of(context).textTheme.subtitle2,
+                    ),
+                  )))
+        ]),
+        // Row 2) Display phone number
+        Row(
+          children: [
+            // Cell 1) Display phone number
+            Align(
+              alignment: Alignment.centerLeft,
+              child: RichText(
+                text: TextSpan(
+                  text: contact.phone,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
               ),
             ),
-          ),
-        ],
-      ),
+          ],
+        ),
+      ]),
     );
   }
 }

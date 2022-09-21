@@ -95,26 +95,55 @@ class HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return MaterialApp(
         home: Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.green,
-        title: const Text('Contact List Management'),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-              child: isLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : RefreshIndicator(
-                      onRefresh: generateContacts,
-                      child: ListView.builder(
-                          padding: const EdgeInsets.all(8),
-                          itemCount: _contacts.length,
-                          itemBuilder: (context, index) {
-                            return ContactContainer(contact: _contacts[index]);
-                          }),
-                    )),
-        ],
-      ),
-    ));
+            appBar: AppBar(
+              backgroundColor: Colors.green,
+              title: const Text('Contact List Management'),
+            ),
+            body: Column(
+              children: [
+                Expanded(
+                    child: isLoading
+                        ? const Center(child: CircularProgressIndicator())
+                        : RefreshIndicator(
+                            onRefresh: generateContacts,
+                            child: ListView.builder(
+                                padding: const EdgeInsets.all(8),
+                                itemCount: _contacts.length,
+                                itemBuilder: (context, index) {
+                                  return ContactContainer(
+                                      contact: _contacts[index]);
+                                }),
+                          )),
+              ],
+            ),
+            floatingActionButton: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Expanded(child: Container()),
+                  // Float 1) Clear all data in the DB
+                  FloatingActionButton(
+                    onPressed: () {
+                      // Add your onPressed code here!
+                    },
+                    backgroundColor: Colors.blueGrey[300],
+                    child: const Icon(Icons.access_time),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  // Float 2) Set SharedPref of time disp mode
+                  FloatingActionButton.extended(
+                    onPressed: () {
+                      // Add your onPressed code here!
+                    },
+                    label: const Text('Clear Data'),
+                    icon: const Icon(Icons.delete),
+                    backgroundColor: Colors.redAccent,
+                  ),
+                ],
+              ),
+            )));
   }
 }

@@ -33,6 +33,7 @@ dependencies:
     sdk: flutter
   sqflite: ^2.1.0 # database
   intl: ^0.17.0 # format datetime
+  shared_preferences: ^2.0.15 # for shared data in ls
 
 
   # The following adds the Cupertino Icons font to your application.
