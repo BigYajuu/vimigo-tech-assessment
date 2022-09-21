@@ -58,7 +58,7 @@ class ContactListDB {
 
     // get all rows
     final queriedJsonList = await db.query(tableContactList,
-        orderBy: '${ContactFields.checkIn} ASC');
+        orderBy: '${ContactFields.checkIn} DESC');
 
     List<Contact> queriedInstances = [];
     if (queriedJsonList.isNotEmpty) {

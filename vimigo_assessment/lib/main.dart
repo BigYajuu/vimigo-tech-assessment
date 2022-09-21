@@ -96,21 +96,25 @@ class HomeState extends State<Home> {
     return MaterialApp(
         home: Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.cyan,
+        backgroundColor: Colors.green,
         title: const Text('Contact List Management'),
       ),
-      body: SizedBox(
-          height: 500,
-          child: isLoading
-              ? const Center(child: CircularProgressIndicator())
-              : RefreshIndicator(
-                  onRefresh: generateContacts,
-                  child: ListView.builder(
-                      itemCount: _contacts.length,
-                      itemBuilder: (context, index) {
-                        return ContactContainer(contact: _contacts[index]);
-                      }),
-                )),
+      body: Column(
+        children: [
+          Expanded(
+              child: isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : RefreshIndicator(
+                      onRefresh: generateContacts,
+                      child: ListView.builder(
+                          padding: const EdgeInsets.all(8),
+                          itemCount: _contacts.length,
+                          itemBuilder: (context, index) {
+                            return ContactContainer(contact: _contacts[index]);
+                          }),
+                    )),
+        ],
+      ),
     ));
   }
 }
