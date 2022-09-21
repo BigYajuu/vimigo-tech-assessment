@@ -32,6 +32,8 @@ const List<String> _phoneList = [
   '0172332743',
   '0191236439',
   '0111931233',
+  '0162879190',
+  '016783239',
 ];
 
 class Home extends StatefulWidget {
@@ -99,7 +101,7 @@ class HomeState extends State<Home> {
   }
 
   DateTime getACheckIn() {
-    const int range = 1200000;
+    const int range = 120000;
     int next = _rand.nextInt(range);
     return DateTime.now().add(Duration(seconds: -next));
   }
@@ -143,6 +145,50 @@ class HomeState extends State<Home> {
                 builder: (context, value, child) {
                   return Column(
                     children: [
+                      Container(
+                          padding: const EdgeInsets.all(12.0),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.2),
+                                spreadRadius: 1,
+                                blurRadius: 3,
+                                offset: const Offset(0, 5),
+                              ),
+                            ],
+                          ),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: RichText(
+                              text: TextSpan(
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                  children: [
+                                    TextSpan(
+                                        text:
+                                            "Drag up and refresh to add 5 randomly generated entries. \nYou may"),
+                                    WidgetSpan(
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 2.0),
+                                        child: Icon(Icons.delete, size: 18),
+                                      ),
+                                    ),
+                                    TextSpan(text: "clear all contacts or"),
+                                    WidgetSpan(
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 2.0),
+                                        child:
+                                            Icon(Icons.access_time, size: 18),
+                                      ),
+                                    ),
+                                    TextSpan(
+                                        text:
+                                            "change the date/time format of the check-in timestamp.\nCurrent Entry Count: ${_contacts.length}")
+                                  ]),
+                            ),
+                          )),
                       Expanded(
                           child: isLoading
                               ? const Center(child: CircularProgressIndicator())
