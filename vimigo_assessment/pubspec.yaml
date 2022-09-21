@@ -36,6 +36,7 @@ dependencies:
   shared_preferences: ^2.0.15 # for shared data in ls
   timeago: ^3.3.0 # to display in timeago format
   fluttertoast: ^8.0.9  # for toast popups
+  flutter_share: ^2.0.0 # to share contact
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_share/flutter_share.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,11 @@ class ContactContainer extends StatefulWidget {
 }
 
 class _ContactContainerState extends State<ContactContainer> {
+  // Format normal dateTime display
+  String getNormalCheckInDisp() {
+    return DateFormat('yyyy-MM-dd hh:mm:ss').format(widget.contact.checkIn);
+  }
+
   // Returns the string display for time.
   // There are 2 modes of display:
   // F) Normal date time format
@@ -29,8 +35,20 @@ class _ContactContainerState extends State<ContactContainer> {
     if (widget.isTimeDispAgo.value) {
       return timeago.format(widget.contact.checkIn);
     } else {
-      return DateFormat('yyyy-MM-dd hh:mm:ss').format(widget.contact.checkIn);
+      return getNormalCheckInDisp();
     }
+  }
+
+  //Share functionality
+  Future<void> shareContact() async {
+    final String content =
+        "Contact Username: ${widget.contact.user}\nPhone: ${widget.contact.phone}\nChecked In @ ${getNormalCheckInDisp()}";
+
+    await FlutterShare.share(
+      title: 'Sharing Contact ${widget.contact.user}',
+      text: content,
+      chooserTitle: 'Share contact as text',
+    );
   }
 
   @override
@@ -91,6 +109,21 @@ class _ContactContainerState extends State<ContactContainer> {
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
               ),
+            ),
+            Expanded(
+              child: Align(
+                  alignment: Alignment.centerRight,
+                  child: SizedBox(
+                    height: 24,
+                    width: 24,
+                    child: IconButton(
+                      icon: const Icon(Icons.share),
+                      padding: const EdgeInsets.all(0),
+                      iconSize: 20,
+                      color: Colors.grey,
+                      onPressed: shareContact,
+                    ),
+                  )),
             ),
           ],
         ),

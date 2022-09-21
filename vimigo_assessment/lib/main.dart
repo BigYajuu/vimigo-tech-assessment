@@ -164,7 +164,7 @@ class HomeState extends State<Home> {
                   return Column(
                     children: [
                       Container(
-                          padding: const EdgeInsets.all(12.0),
+                          padding: const EdgeInsets.all(16.0),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             boxShadow: [
