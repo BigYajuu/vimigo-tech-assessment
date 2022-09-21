@@ -5,7 +5,7 @@ Created by Chuyue Wu (cwuu0034@student.monash.edu)
 This project is meant for entry assessment of Vimigo.
 
 ## Features Implemented
-1. [ ] Display a contacts list that is sorted based on the time. The time should be displayed in the format of “time ago” eg. 1 minute ago or 1 hour ago. The ordering of the list should be started from the most recent to the oldest.
+1. [X] Display a contacts list that is sorted based on the time. The time should be displayed in the format of “time ago” eg. 1 minute ago or 1 hour ago. The ordering of the list should be started from the most recent to the oldest.
 2. [X] Given an example that you have 30 sets of data and you are only displaying half of it. Users are able to load the remaining data by pulling up the list.
 3. [X] Users must be able to pull-to-refresh to generate a set of 5 random contacts data and append to the existing list.
 4. [ ] If the user has scrolled down the list and reached the end. An indicator should inform the user that “You have reached end of the list”.
@@ -15,5 +15,7 @@ This project is meant for entry assessment of Vimigo.
 ## Dependencies
 - sqflite - Storing local data
 - intl - DateTime
+- shared_preferences - Storing irrelational data in local (for changing time mode display)
+- timeago - For displaying DateTime in 'xx ago' format
 
 (See pubspec.yaml)

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:timeago/timeago.dart' as timeago;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -26,7 +27,7 @@ class _ContactContainerState extends State<ContactContainer> {
   String getCheckInDisplay() {
     // print(widget.isTimeDispAgo.value);
     if (widget.isTimeDispAgo.value) {
-      return '- time ago';
+      return timeago.format(widget.contact.checkIn);
     } else {
       return DateFormat('yyyy-MM-dd hh:mm:ss').format(widget.contact.checkIn);
     }
