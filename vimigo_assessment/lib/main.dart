@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'local_storage/db.dart';
 import 'components/contact_containter.dart';
@@ -44,21 +45,38 @@ class Home extends StatefulWidget {
 }
 
 class HomeState extends State<Home> {
-  late List<Contact> _contacts = [
-    Contact(user: getAName(), phone: getAPhone(), checkIn: getACheckIn())
-  ]; // Sets as state of all contacts (from db)
+  late List<Contact> _contacts = []; // Sets as state of all contacts (from db)
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  late ScrollController _scrollController; // Tracks scroll data
   final _timeDispAgo = ValueNotifier(true);
   bool isLoading = false;
 
   @override
   void initState() {
+    _scrollController = ScrollController(); // Initiate scroll control
+    _scrollController
+        .addListener(_scrollListener); // To detect if scroll to bottom
+
     super.initState();
 
     refreshContacts();
+    getTimeDispAgo(); // Initiate time disp mode boolean
+  }
 
-    // Configure time disp mode boolean
-    getTimeDispAgo();
+  // Configure Scroll Listener to detect scroll status of the list view
+  void _scrollListener() {
+    if (_scrollController.offset >=
+            _scrollController.position.maxScrollExtent &&
+        !_scrollController.position.outOfRange) {
+      Fluttertoast.showToast(
+          msg: "You have reached end of the list",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM_LEFT,
+          timeInSecForIosWeb: 1,
+          // backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
   }
 
   // Configure time disp mode boolean through sharedPref lookup
@@ -195,6 +213,7 @@ class HomeState extends State<Home> {
                               : RefreshIndicator(
                                   onRefresh: generateContacts,
                                   child: ListView.builder(
+                                      controller: _scrollController,
                                       padding: const EdgeInsets.all(8),
                                       itemCount: _contacts.length,
                                       itemBuilder: (context, index) {
