@@ -184,7 +184,7 @@ class HomeState extends State<Home> {
                                   children: [
                                     TextSpan(
                                         text:
-                                            "Drag up and refresh to add 5 randomly generated entries. \nYou may"),
+                                            "Drag the page down and refresh to add 5 randomly generated entries. \nYou may"),
                                     WidgetSpan(
                                       child: Padding(
                                         padding: const EdgeInsets.symmetric(
@@ -214,6 +214,8 @@ class HomeState extends State<Home> {
                                   onRefresh: generateContacts,
                                   child: ListView.builder(
                                       controller: _scrollController,
+                                      physics:
+                                          const AlwaysScrollableScrollPhysics(),
                                       padding: const EdgeInsets.all(8),
                                       itemCount: _contacts.length,
                                       itemBuilder: (context, index) {
